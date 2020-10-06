@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:personal_expenses/widgets/new_transaction.dart';
 import 'package:personal_expenses/widgets/transaction_list.dart';
+import 'package:personal_expenses/widgets/chart.dart';
+
 import 'models/transaction.dart';
 
 void main() => runApp(MyApp());
@@ -42,31 +44,41 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final List<Transaction> _userTransactions = [
-    Transaction(
-      id: 't1',
-      title: 'new shoes',
-      amount: 100.10,
-      date: DateTime.now(),
-    ),
-    Transaction(
-      id: 't2',
-      title: 'XBOX S',
-      amount: 75.67,
-      date: DateTime.now(),
-    ),
-    Transaction(
-      id: 't3',
-      title: 'XBOX S',
-      amount: 8091,
-      date: DateTime.now(),
-    ),
-    Transaction(
-      id: 't4',
-      title: 'XBOX S',
-      amount: 90,
-      date: DateTime.now(),
-    ),
+    // Transaction(
+    //   id: 't1',
+    //   title: 'new shoes',
+    //   amount: 100.10,
+    //   date: DateTime.now(),
+    // ),
+    // Transaction(
+    //   id: 't2',
+    //   title: 'XBOX S',
+    //   amount: 75.67,
+    //   date: DateTime.now(),
+    // ),
+    // Transaction(
+    //   id: 't3',
+    //   title: 'XBOX S',
+    //   amount: 8091,
+    //   date: DateTime.now(),
+    // ),
+    // Transaction(
+    //   id: 't4',
+    //   title: 'XBOX S',
+    //   amount: 90,
+    //   date: DateTime.now(),
+    // ),
   ];
+
+  List<Transaction> get _recentTransactions {
+    return _userTransactions
+        .where(
+          (transaction) => transaction.date.isAfter(
+            DateTime.now().subtract(Duration(days: 7)),
+          ),
+        )
+        .toList();
+  }
 
   void _addNewTransaction(String title, double amount) {
     final newTx = Transaction(
@@ -116,15 +128,8 @@ class _MyHomePageState extends State<MyHomePage> {
           // mainAxisAlignment: MainAxisAlignment.spaceAround,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            Container(
-              width: double.infinity,
-              child: Card(
-                color: Colors.blue,
-                child: Text('Chart!'),
-                elevation: 5,
-              ),
-            ),
-            TransactionList(_userTransactions)
+            Chart(_recentTransactions),
+            TransactionList(_userTransactions),
           ],
         ),
       ),
