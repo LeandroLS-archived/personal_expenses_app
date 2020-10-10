@@ -30,24 +30,34 @@ class Chart extends StatelessWidget {
       };
     });
   }
-  double get totalSpeding{
-    return groupedTransactionValues.fold(0.0, (sum, transaction){
+
+  double get totalSpeding {
+    return groupedTransactionValues.fold(0.0, (sum, transaction) {
       return sum + transaction['amount'];
     });
   }
+
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 6,
-      margin: EdgeInsets.all(20),
-      child: Row(
-        children: groupedTransactionValues.map((data) {
-          return ChartBar(
-            data['day'],
-            data['amount'],
-            totalSpeding == 0 ? 0 : (data['amount'] as double) / totalSpeding
-          );
-        }).toList(),
+    return Container(
+      padding: EdgeInsets.all(10),
+      child: Card(
+        elevation: 6,
+        margin: EdgeInsets.all(20),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: groupedTransactionValues.map((data) {
+            return Flexible(
+              fit: FlexFit.tight,
+              child: ChartBar(
+                  data['day'],
+                  data['amount'],
+                  totalSpeding == 0
+                      ? 0
+                      : (data['amount'] as double) / totalSpeding),
+            );
+          }).toList(),
+        ),
       ),
     );
   }
